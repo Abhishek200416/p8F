@@ -29,6 +29,22 @@ import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : '/api';
 
+const renderTextWithEmojis = (str, emoSize = 14, offset = '0px') => {
+  if (!str) return null;
+  const parts = str.split(/([\uD800-\uDBFF][\uDC00-\uDFFF])/g);
+  return parts.map((part, i) => {
+    if (/[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(part)) {
+      return (
+        <span key={i} style={{ fontSize: `${emoSize}px`, verticalAlign: offset, display: 'inline-block' }}>
+          {part}
+        </span>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
+
+
 const HOBBY_OPTIONS = [
   { value: 'Networking', label: '🤝 Networking' }, { value: 'Conferences', label: '🏢 Conferences' }, { value: 'Concerts', label: '🎵 Concerts' }, { value: 'Art Exhibitions', label: '🖼️ Art Exhibitions' }, { value: 'Fine Dining', label: '🍽️ Fine Dining' },
   { value: 'Corporate Events', label: '👔 Corporate Events' }, { value: 'Charity Galas', label: '🎗️ Charity Galas' }, { value: 'Sports Events', label: '🏟️ Sports Events' }, { value: 'Theater', label: '🎭 Theater' }, { value: 'Travel', label: '✈️ Travel' },
